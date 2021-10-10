@@ -3,8 +3,15 @@
   (:export
     :now-millis
     :get-error-backtrace
-    :get-log-level
-    :aget))
+    :aget
+    :trim-to-nil))
+
+(defpackage outside.config
+  (:use :cl :arrow-macros :metabang-bind)
+  (:export
+    :value
+    :*values*
+    :load-values))
 
 (defpackage outside.web
   (:use :cl :arrow-macros :metabang-bind)

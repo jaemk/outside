@@ -12,27 +12,16 @@
     (sb-ext:quit :unix-status 1)))
 
 
-(defun get-host ()
-  (bind ((public (sb-ext:posix-getenv "PUBLIC"))
-         (public (equal (-> public str:trim string-downcase) "true")))
-    (if public
-      "0.0.0.0"
-      "127.0.0.1")))
-
-(defun get-port ()
-  (bind ((port (-> (sb-ext:posix-getenv "PORT") str:trim))
-         (port (if (> (length port) 0) port "3003"))
-         (port (parse-integer port)))
-    port))
-
 (defun main (argvs)
   (handler-case
     (progn
-      (log:config (outside.utils:get-log-level))
+      (log:config (outside.config:value :log-level))
       (log:config :sane2)
       (log:config :nofile)
       (log:debug "args: ~a" argvs)
-      (outside.web:start-server :address (get-host) :port (get-port))
+      (outside.web:start-server
+        :address (outside.config:value :host)
+        :port (outside.config:value :port))
       (sb-thread:join-thread
         (find-if (lambda (th)
                    (str:starts-with-p "hunchentoot-listener" (sb-thread:thread-name th)))

@@ -108,16 +108,11 @@
     s))
 
 
-(defmacro get-version ()
-  (when (uiop:probe-file* "commit_hash.txt")
-    (->
-      (str:from-file "commit_hash.txt")
-      (str:trim)
-      ((lambda (s) (format t "~&WARNING: loaded commit hash: ~a - should only be at build time!~%" s) s)))))
-
-
 (defhandler status ()
-  (cl-json:encode-json-to-string (list (cons :ok "ok") (cons :version (get-version)))))
+  (cl-json:encode-json-to-string
+    (list
+      (cons :ok "ok")
+      (cons :version (outside.config:value :version)))))
 
 
 (defhandler hello ()

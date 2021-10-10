@@ -18,12 +18,14 @@
       "trivial-backtrace"
       "bordeaux-threads"
       "uiop"
+      "alexandria"
   )
   :serial t
   :components ((:module "src"
                 :components
                 ((:file "package")
                  (:file "utils")
+                 (:file "config")
                  (:file "web")
                  (:file "main")
                  )))

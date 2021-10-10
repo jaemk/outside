@@ -14,6 +14,7 @@
                       "trivial-backtrace"
                       "bordeaux-threads"
                       "uiop"
+                      "alexandria"
                       ))
 
 (loop for d in +deps+ do
