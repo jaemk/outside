@@ -198,9 +198,11 @@
         (bind ((new-val (get-weather lat long))
                (now-ms (outside.utils:now-millis))
                (result (vector new-val now-ms)))
-          (progn
-            (setf (gethash key *cache*) result)
-            (values new-val nil)))))))
+          (if (or (null new-val) (str:empty? new-val))
+            (values new-val nil)
+            (progn
+              (setf (gethash key *cache*) result)
+              (values new-val nil))))))))
 
 
 (defun get-weather (lat long)
