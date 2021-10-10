@@ -30,8 +30,7 @@
 ;; Customize request access log format
 (defmethod hunchentoot:acceptor-log-access ((acceptor accptr)
                                             &key return-code)
-  (bind ((remote (hunchentoot:remote-addr*))
-         (method (hunchentoot:request-method*))
+  (bind ((method (hunchentoot:request-method*))
          (uri (hunchentoot:request-uri*))
          (request-start (hunchentoot:aux-request-value :request-start hunchentoot:*request*))
          (now (outside.utils:now-millis))
@@ -39,8 +38,8 @@
     (hunchentoot:acceptor-log-message
       acceptor
       :info
-      "~a ~a ~a ~a ~ams"
-      return-code remote method uri request-time-millis)))
+      "~a ~a ~a ~ams"
+      return-code method uri request-time-millis)))
 
 
 ;; Generate a response for unexpected handler errors.
