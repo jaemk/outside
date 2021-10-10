@@ -42,15 +42,20 @@
 
 
 (defun load-values ()
-  (setf *values* (make-hash-table))
-  (setf (gethash :log-level *values*)
+  (->
+    (list
+      (list :log-level
         (some-> (env "LOG_LEVEL" :default "info") string-upcase s->log-level))
-  (setf (gethash :version *values*)
+      (list :version
         (get-version))
-  (setf (gethash :host *values*)
+      (list :host
         (-> (env "PUBLIC") parse-boolean ((lambda (p) (if p "0.0.0.0" "127.0.0.1")))))
-  (setf (gethash :port *values*)
+      (list :port
         (some-> (or (env "PORT") "3003") parse-integer)))
+    ((lambda (vals)
+       (setf *values* (make-hash-table))
+       (loop for (k v) in vals do
+         (setf (gethash k *values*) v))))))
 
 
 (defun value (key)

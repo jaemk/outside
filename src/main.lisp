@@ -25,8 +25,7 @@
       (sb-thread:join-thread
         (find-if (lambda (th)
                    (str:starts-with-p "hunchentoot-listener" (sb-thread:thread-name th)))
-                 (sb-thread:list-all-threads)))
-      )
+                 (sb-thread:list-all-threads))))
 
     ;; C-c
     (sb-sys:interactive-interrupt
