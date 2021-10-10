@@ -1,6 +1,6 @@
 FROM clfoundation/sbcl:2.1.5-slim-buster
 
-RUN apt update --yes && apt install --yes \
+RUN apt-get update --yes && apt-get install --yes \
     git \
     build-essential \
     curl
