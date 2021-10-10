@@ -8,7 +8,8 @@ version="$(git rev-parse HEAD | awk '{ printf "%s", substr($0, 0, 7) }')"
 # options
 reg="${REGISTRY:-docker.jaemk.me}"
 app="outside"
-port_map="${PORT_MAP:-127.0.0.1:3003:3003}"
+port_map_port="${PORT_MAP_PORT:-3003}"
+port_map="${PORT_MAP:-127.0.0.1:$port_map_port:$port_map_port}"
 
 env_file=""
 if [ -f .env.docker ]; then
