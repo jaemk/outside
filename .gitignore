@@ -8,4 +8,6 @@
 *~
 .#*
 build/
+commit_hash.txt
+.env*
 

@@ -12,6 +12,13 @@
     (sb-ext:quit :unix-status 1)))
 
 
+(defun get-host ()
+  (bind ((public (sb-ext:posix-getenv "PUBLIC"))
+         (public (equal (-> public str:trim string-downcase) "true")))
+    (if public
+      "0.0.0.0"
+      "127.0.0.1")))
+
 (defun main (argvs)
   (handler-case
     (progn
@@ -19,7 +26,7 @@
       (log:config :sane2)
       (log:config :nofile)
       (log:debug "args: ~a" argvs)
-      (outside.web:start-server)
+      (outside.web:start-server :address (get-host))
       (sb-thread:join-thread
         (find-if (lambda (th)
                    (str:starts-with-p "hunchentoot-listener" (sb-thread:thread-name th)))

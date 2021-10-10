@@ -109,14 +109,23 @@
     s))
 
 
+(defmacro get-version ()
+  (when (uiop:probe-file* "commit_hash.txt")
+    (->
+      (str:from-file "commit_hash.txt")
+      (str:trim)
+      ((lambda (s) (format t "~&WARNING: loaded commit hash: ~a - should only be at build time!~%" s) s)))))
+
+
 (defhandler status ()
-  (cl-json:encode-json-to-string (list (cons :ok "ok") (cons :version "n/a"))))
+  (cl-json:encode-json-to-string (list (cons :ok "ok") (cons :version (get-version)))))
 
 
 (defhandler hello ()
   (bind ((uri (hunchentoot:request-uri*))
          ((:values s caps) (ppcre:scan-to-strings #?r"/hello/(?<name>\w+)/?$" uri))
          (#(name) (or caps #(nil))))
+    (declare (ignore s))
     (format nil "hello~:[~;, ~@(~a~)~]!" name name)))
 
 
@@ -140,16 +149,18 @@
 
 (defvar *server* nil)
 
-(defun start-server (&key (port nil))
-  (log:info "starting server")
-  (if (null *server*)
-      (progn
-        (->> (make-instance 'accptr :port (or port 3000))
-             (set-routes)
-             (setf *server*)
-             (hunchentoot:start))
-        (log:info "server started"))
-      (log:warn "server already started")))
+(defun start-server (&key (port nil) (address nil))
+  (bind ((address (or address "127.0.0.1"))
+         (port (or port 3003)))
+    (log:info "starting server on ~a:~a" address port))
+    (if (null *server*)
+        (progn
+          (->> (make-instance 'accptr :port (or port 3003) :address (or address "127.0.0.1"))
+               (set-routes)
+               (setf *server*)
+               (hunchentoot:start))
+          (log:info "server started"))
+        (log:warn "server already started")))
 
 
 (defun stop-server ()

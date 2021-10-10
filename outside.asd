@@ -17,6 +17,7 @@
       "local-time"
       "trivial-backtrace"
       "bordeaux-threads"
+      "uiop"
   )
   :serial t
   :components ((:module "src"

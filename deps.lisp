@@ -13,6 +13,7 @@
                       "local-time"
                       "trivial-backtrace"
                       "bordeaux-threads"
+                      "uiop"
                       ))
 
 (loop for d in +deps+ do
