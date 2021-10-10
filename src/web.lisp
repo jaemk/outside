@@ -134,6 +134,7 @@
   (list
     (hunchentoot:create-regex-dispatcher #?r"/hello(/\w+)?/?$" 'hello)
     (hunchentoot:create-regex-dispatcher #?r"/status/?$" 'status)
+    (hunchentoot:create-static-file-dispatcher-and-handler "/favicon.ico" "static/favicon.ico")
     (hunchentoot:create-prefix-dispatcher "/" 'index)))
 
 

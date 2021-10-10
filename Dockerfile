@@ -26,5 +26,7 @@ RUN make || (cat build/build.log && exit 1)
 RUN mkdir -p bin
 RUN mv build/bin/outside bin/outside && rm -rf build/
 
+COPY ./static ./static
+
 CMD [ "bin/outside" ]
 
