@@ -1,0 +1,43 @@
+# fly.toml file generated for kom-outside on 2022-10-23T20:27:20Z
+
+app = "kom-outside"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[env]
+  LOG_LEVEL = "info"
+  PORT = 3003
+  PUBLIC = true
+
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true
+
+[[services]]
+  internal_port = 3003
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+  [services.concurrency]
+    hard_limit = 25
+    soft_limit = 20
+    type = "connections"
+
+  [[services.http_checks]]
+    grace_period = "5s"
+    interval = "15s"
+    method = "get"
+    path = "/status"
+    protocol = "http"
+    restart_limit = 0
+    timeout = "2s"
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
