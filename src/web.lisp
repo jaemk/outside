@@ -215,7 +215,6 @@
         #?"https://api.weather.gov/points/${latlong}"
         :additional-headers (list (cons "user-agent" *user-agent*)))
       (flexi-streams:octets-to-string)
-      ((lambda (s) (log:info "res ~a" s) s))
       (cl-json:decode-json-from-string)
       (outside.utils:aget :properties)
       (outside.utils:aget :forecast)
